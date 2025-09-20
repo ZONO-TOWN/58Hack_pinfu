@@ -10,10 +10,6 @@
 # production
 /build
 
-/app/api/gemini-api-v2/node_modules/
-/app/api/gemini-api-v2/package-lock.json
-/app/api/gemini-api-v2/config.json
-
 # debug
 npm-debug.log*
 yarn-debug.log*
@@ -22,6 +18,9 @@ yarn-error.log*
 
 # env files
 .env*
+
+#idea
+/.idea
 
 # vercel
 .vercel
