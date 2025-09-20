@@ -7,7 +7,7 @@ import { Suspense } from "react"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "ほめちゃる（仮） - AI褒め言葉生成サイト",
+  title: "ほめちゃる - AI褒め言葉生成サイト",
   description: "人を褒めることに特化したAI。語彙力がなくても大丈夫、心のこもった褒め言葉を生成します。",
   generator: "v0.app",
   icons: {

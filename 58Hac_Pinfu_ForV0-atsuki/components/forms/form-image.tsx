@@ -7,8 +7,7 @@ import { useDropzone } from "react-dropzone"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { askWithImage } from "@/lib/gemini"
-
-const MAX_PREVIEW_COUNT = 3
+import Image from "next/image";
 
 export function ImagePraiseForm() {
     const [imageFiles, setImageFiles] = useState<File[]>([])
@@ -33,10 +32,7 @@ export function ImagePraiseForm() {
 
         setIsLoading(true)
         try {
-            const compliments = await Promise.all(
-                imageFiles.map((file) => askWithImage(file))
-            )
-            setResult(compliments.join("\n\n"))
+            setResult(await askWithImage(imageFiles))
         } catch (error) {
             console.error("Error:", error)
             setResult("エラーが発生しました")
@@ -67,7 +63,13 @@ export function ImagePraiseForm() {
 
                 {/* Main Title */}
                 <div className="text-center mb-8">
-                    <h2 className="text-4xl font-bold text-gray-900 mb-4">ほめちゃる（画像版）</h2>
+                    <Image
+                        src="/homecharu.png"
+                        alt="ほめちゃるロゴ"
+                        width={200}
+                        height={200}
+                        className="mx-auto mb-4"
+                    />
                     <p className="text-lg text-gray-600">画像に写った人物に対して、心のこもった褒め言葉を生成します</p>
                 </div>
 
@@ -96,20 +98,17 @@ export function ImagePraiseForm() {
 
                             {/* Image Previews */}
                             {previewUrls.length > 0 && (
-                                <div className="mt-4 grid grid-cols-3 gap-4">
-                                    {previewUrls.slice(0, MAX_PREVIEW_COUNT).map((url, idx) => (
-                                        <img
-                                            key={idx}
-                                            src={url}
-                                            alt={`プレビュー ${idx + 1}`}
-                                            className="w-full h-auto rounded shadow"
-                                        />
-                                    ))}
-                                    {previewUrls.length > MAX_PREVIEW_COUNT && (
-                                        <div className="flex items-center justify-center text-gray-500 text-sm">
-                                            +{previewUrls.length - MAX_PREVIEW_COUNT}枚
-                                        </div>
-                                    )}
+                                <div className="mt-4 max-h-[400px] overflow-y-auto border border-gray-200 rounded-lg p-2">
+                                    <div className="flex flex-col gap-y-4">
+                                        {previewUrls.map((url, idx) => (
+                                            <img
+                                                key={idx}
+                                                src={url}
+                                                alt={`プレビュー ${idx + 1}`}
+                                                className="w-full max-w-sm mx-auto rounded shadow"
+                                            />
+                                        ))}
+                                    </div>
                                 </div>
                             )}
 

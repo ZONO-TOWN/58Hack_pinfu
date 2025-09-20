@@ -44,16 +44,19 @@ export async function ask(formData: Target): Promise<string> {
     return result.response.text();
 }
 
-export async function askWithImage(file: File): Promise<string> {
-    const buffer = await file.arrayBuffer()
-    const base64 = Buffer.from(buffer).toString("base64")
-
-    const imagePart = {
-        inlineData: {
-            mimeType: file.type,
-            data: base64,
-        },
-    }
+export async function askWithImage(files: File[]): Promise<string> {
+    const imageParts = await Promise.all(
+        files.map(async (file) => {
+            const buffer = await file.arrayBuffer()
+            const base64 = Buffer.from(buffer).toString("base64")
+            return {
+                inlineData: {
+                    mimeType: file.type,
+                    data: base64,
+                },
+            }
+        })
+    )
 
     const prompt = `あなたは人を褒めることに特化したAIアシスタントです。以下の画像に写っている人物の外見や雰囲気をもとに、心のこもった自然な褒め言葉を日本語で生成してください。
 
@@ -64,6 +67,6 @@ export async function askWithImage(file: File): Promise<string> {
         
         褒め言葉のみを返答し、事実であるかどうかわからないことに関して言及しないでください。。`
 
-    const result = await model.generateContent([prompt, imagePart]);
+    const result = await model.generateContent([prompt, ...imageParts]);
     return result.response.text();
 }
