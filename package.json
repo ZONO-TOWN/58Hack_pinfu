@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build --dotenv .env",
-    "dev": "next dev --dotenv .env",
-    "lint": "next lint --dotenv .env",
-    "start": "next start --dotenv .env"
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "next lint",
+    "start": "next start"
   },
   "dependencies": {
     "@google/generative-ai": "^0.5.0",
